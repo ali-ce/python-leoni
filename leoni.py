@@ -37,13 +37,15 @@ for film in films:
         row['prize_share'] = round(1/len(nazioni),2)
         data.append(row)
 
-#Crea dataframe da list of dict
+#Crea dataframe da list of dict e salva csv
 df = pd.DataFrame(data)
+df = df[['anno', 'film', 'nazione', 'prize_share', 'note']]
+df.to_csv('vincitori.csv',  encoding='utf8', index = False)
 
 #Crea pivot e salva csv
 nazioni_count = df.pivot_table(index = 'nazione', aggfunc = {'nazione':'count', 'prize_share':'sum'}).sort_values(by= 'nazione', ascending=False)
 nazioni_count.columns = ['leoni_absolute', 'leoni_prize_share'] 
-nazioni_count.to_csv('leoni.csv',  encoding='utf8')
+nazioni_count.to_csv('vincitori-count.csv',  encoding='utf8')
 
 # Crea bar e salva
 nazioni_count.plot(kind='barh',figsize=(10,10), width=0.8, color=['#5ab4ac','#d8b365']).invert_yaxis()
